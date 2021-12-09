@@ -1,29 +1,33 @@
 package main
 
 import (
-  "go.fiber.restful/bookmark"
-  _ "go.fiber.restful/database"
+	"go.fiber.restful/bookmark"
+	"go.fiber.restful/database"
 
-  "github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2"
 )
 
 func status(c *fiber.Ctx) error {
-  return c.SendString("Server is running! Send your request")
+	return c.SendString("Server is running! Send your request")
 }
 
 func setupRoutes(app *fiber.App) {
 
-  app.Get("/", status)
+	app.Get("/", status)
 
-  app.Get("/api/bookmark", bookmark.GetAllBookmarks)
-  app.Post("/api/bookmark", bookmark.SaveBookmark)
+	app.Get("/api/bookmark", bookmark.GetAllBookmarks)
+	app.Post("/api/bookmark", bookmark.SaveBookmark)
 }
 
-
 func main() {
-  app := fiber.New()
+	app := fiber.New()
+	dbErr := database.InitDatabase()
 
-  setupRoutes(app)
+	if dbErr != nil {
+		panic(dbErr)
+	}
 
-  app.Listen(":3000")
+	setupRoutes(app)
+
+	app.Listen(":3000")
 }

@@ -1,24 +1,50 @@
 package database
 
 import (
-  "gorm.io/driver/postgres"
-  "gorm.io/gorm"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type Bookmark struct {
-  gorm.Model
-  Name string `json:"name"`
-  Url string `json:"url"`
+	gorm.Model
+	Name string `json:"name"`
+	Url  string `json:"url"`
 }
 
-func initDatabase() error {
-  dsn := "host=localhost user=postgres password=1234 dbname=testdb port=5432 sslmode=disable"
-  db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-  if err != nil {
-    return err
-  }
+const DBConfig = "host=localhost user=user password=1234 dbname=testdb port=5432 sslmode=disable"
 
-  db.AutoMigrate()
+func InitDatabase() error {
+	db, err := gorm.Open(postgres.Open(DBConfig), &gorm.Config{})
+	if err != nil {
+		return err
+	}
 
-  return nil
+	db.AutoMigrate(&Bookmark{})
+
+	return nil
+}
+
+func CreateBookmark(b *Bookmark) (Bookmark, error) {
+	db, err := gorm.Open(postgres.Open(DBConfig), &gorm.Config{})
+
+	if err != nil {
+		return *b, err
+	}
+
+	db.Create(b)
+
+	return *b, nil
+}
+
+func GetAllBookmarks() ([]Bookmark, error) {
+	bookmarks := []Bookmark{}
+	db, err := gorm.Open(postgres.Open(DBConfig), &gorm.Config{})
+
+	if err != nil {
+		return bookmarks, err
+	}
+
+	db.Find(&bookmarks)
+
+	return bookmarks, nil
 }
