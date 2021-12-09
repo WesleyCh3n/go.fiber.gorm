@@ -1,7 +1,7 @@
 package database
 
 import (
-	"errors"
+	"fmt"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -61,7 +61,7 @@ func GetBookmark(id string) (Bookmark, error) {
 
 	db.Find(&bookmark, id)
 	if bookmark.Name == "" {
-		return bookmark, errors.New("No bookmark found")
+		return bookmark, fmt.Errorf("can't find bookmark %s", id)
 	}
 
 	return bookmark, nil
@@ -77,7 +77,7 @@ func DeleteBookmark(id string) (Bookmark, error) {
 
 	db.First(&bookmark, id)
 	if bookmark.Name == "" {
-		return bookmark, errors.New("No bookmark found")
+		return bookmark, fmt.Errorf("can't find bookmark %s", id)
 	}
 
 	db.Delete(&bookmark, id)
