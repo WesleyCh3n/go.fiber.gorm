@@ -5,8 +5,27 @@ import (
 	"go.fiber.restful/database"
 )
 
-func GetAllBookmarks(c *fiber.Ctx) error {
-	result, err := database.GetAllBookmarks()
+func GetBookmarks(c *fiber.Ctx) error {
+	result, err := database.GetBookmarks()
+	if err != nil {
+		c.Status(500).JSON(&fiber.Map{
+			"success": false,
+			"message": err,
+			"data":    nil,
+		})
+		return err
+	}
+	return c.Status(200).JSON(&fiber.Map{
+		"success": true,
+		"message": "",
+		"data":    result,
+	})
+}
+
+func GetBookmark(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	result, err := database.GetBookmark(id)
 	if err != nil {
 		c.Status(500).JSON(&fiber.Map{
 			"success": false,
@@ -51,5 +70,28 @@ func SaveBookmark(c *fiber.Ctx) error {
 		"message": "",
 		"data":    result,
 	})
+	return nil
+}
+
+func DeleteBookmark(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	_, err := database.DeleteBookmark(id)
+
+	if err != nil {
+		c.Status(400).JSON(&fiber.Map{
+			"success": false,
+			"message": err,
+			"data":    nil,
+		})
+		return err
+	}
+
+	c.Status(200).JSON(&fiber.Map{
+		"success": true,
+		"message": "bookmark deleted",
+		"data":    nil,
+	})
+
 	return nil
 }

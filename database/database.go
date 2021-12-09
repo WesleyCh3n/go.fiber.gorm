@@ -1,6 +1,8 @@
 package database
 
 import (
+	"errors"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -36,7 +38,7 @@ func CreateBookmark(b *Bookmark) (Bookmark, error) {
 	return *b, nil
 }
 
-func GetAllBookmarks() ([]Bookmark, error) {
+func GetBookmarks() ([]Bookmark, error) {
 	bookmarks := []Bookmark{}
 	db, err := gorm.Open(postgres.Open(DBConfig), &gorm.Config{})
 
@@ -47,4 +49,38 @@ func GetAllBookmarks() ([]Bookmark, error) {
 	db.Find(&bookmarks)
 
 	return bookmarks, nil
+}
+
+func GetBookmark(id string) (Bookmark, error) {
+	bookmark := Bookmark{}
+	db, err := gorm.Open(postgres.Open(DBConfig), &gorm.Config{})
+
+	if err != nil {
+		return bookmark, err
+	}
+
+	db.Find(&bookmark, id)
+	if bookmark.Name == "" {
+		return bookmark, errors.New("No bookmark found")
+	}
+
+	return bookmark, nil
+}
+
+func DeleteBookmark(id string) (Bookmark, error) {
+	bookmark := Bookmark{}
+
+	db, err := gorm.Open(postgres.Open(DBConfig), &gorm.Config{})
+	if err != nil {
+		return bookmark, err
+	}
+
+	db.First(&bookmark, id)
+	if bookmark.Name == "" {
+		return bookmark, errors.New("No bookmark found")
+	}
+
+	db.Delete(&bookmark, id)
+
+	return bookmark, nil
 }

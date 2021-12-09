@@ -12,11 +12,11 @@ func status(c *fiber.Ctx) error {
 }
 
 func setupRoutes(app *fiber.App) {
-
 	app.Get("/", status)
-
-	app.Get("/api/bookmark", bookmark.GetAllBookmarks)
+	app.Get("/api/bookmark", bookmark.GetBookmarks)
+	app.Get("/api/bookmark/:id", bookmark.GetBookmark)
 	app.Post("/api/bookmark", bookmark.SaveBookmark)
+	app.Delete("/api/bookmark/:id", bookmark.DeleteBookmark)
 }
 
 func main() {
