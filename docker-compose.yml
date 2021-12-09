@@ -9,7 +9,3 @@ services:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=1234
 
-
-
-# exec into shell
-# docker exec -it gofiberrestful_db_1 psql -U user -h 127.0.0.1 -p 5432
