@@ -19,15 +19,20 @@ func setupRoutes(app *fiber.App) {
 	app.Delete("/api/bookmark/:id", bookmark.DeleteBookmark)
 }
 
-func main() {
+func NewServer() *fiber.App {
 	app := fiber.New()
+	setupRoutes(app)
+
+	return app
+}
+
+func main() {
 	dbErr := database.InitDatabase()
 
 	if dbErr != nil {
 		panic(dbErr)
 	}
 
-	setupRoutes(app)
-
+	app := NewServer()
 	app.Listen(":3000")
 }
