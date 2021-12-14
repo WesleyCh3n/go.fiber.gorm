@@ -35,10 +35,24 @@ func TestCRUD(t *testing.T) {
 		method string
 	}{
 		{
-			name:  "Create",
-			route: "/api/bookmark",
+			name:  "Create bookmark",
+			route: "/api/bookmark/pattern",
+		},
+		{
+			name:  "Read bookmark",
+			route: "/api/bookmark/pattern",
+		},
+		{
+			name:  "Update bookmark",
+			route: "/api/bookmark/pattern",
+		},
+		{
+			name:  "Delete bookmark",
+			route: "/api/bookmark/pattern",
 		},
 	}
+	// TODO:disign API pattern
+	// NOTE:reproduced CD database
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
