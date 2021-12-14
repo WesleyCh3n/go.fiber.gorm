@@ -25,3 +25,27 @@ func TestServer(t *testing.T) {
 		t.Errorf("body got %v got %v", gotBody, wantBody)
 	}
 }
+
+func TestCRUD(t *testing.T) {
+	app := NewServer()
+
+	tests := []struct {
+		name   string
+		route  string
+		method string
+	}{
+		{
+			name:  "Create",
+			route: "/api/bookmark",
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			t.Helper()
+			resp, err := app.Test(httptest.NewRequest(test.method, test.route, nil))
+			utils.AssertEqual(t, nil, err, "App test")
+			utils.AssertEqual(t, 200, resp.StatusCode, "Status code")
+		})
+	}
+}
