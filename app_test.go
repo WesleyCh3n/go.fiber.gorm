@@ -51,8 +51,8 @@ func TestCRUD(t *testing.T) {
 			route: "/api/bookmark/pattern",
 		},
 	}
-	// TODO:disign API pattern
-	// NOTE:reproduced CD database
+	// TODO: disign API pattern
+	// NOTE: reproduced CD database
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

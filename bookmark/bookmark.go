@@ -69,6 +69,7 @@ func SaveBookmark(c *fiber.Ctx) error {
 		"success": true,
 		"message": "",
 		"data":    result,
+		"ID":      newbkmk.ID,
 	})
 	return nil
 }
