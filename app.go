@@ -1,10 +1,15 @@
 package main
 
 import (
+	"fmt"
+	"log"
+	"os"
+
 	"go.fiber.restful/bookmark"
 	"go.fiber.restful/database"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 )
 
 func status(c *fiber.Ctx) error {
@@ -27,7 +32,12 @@ func NewServer() *fiber.App {
 }
 
 func main() {
+	err := godotenv.Load()
 	dbErr := database.InitDatabase()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	fmt.Print(os.Getenv("postgres_user"))
 
 	if dbErr != nil {
 		panic(dbErr)
