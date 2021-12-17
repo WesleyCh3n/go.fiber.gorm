@@ -5,6 +5,10 @@ docker exec -it gofiberrestful_db_1 psql -U user -h 127.0.0.1 -p 5432
 ```
 
 ```sql
+create role <user-name> with login password '<password>';
+create database <DBname> owner <role>;
+alter role <role> with login;
+
 \l -- list database
 \c <DBname> -- use db
 CREATE DATABASE DB_name;
