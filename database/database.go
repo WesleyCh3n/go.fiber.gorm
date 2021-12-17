@@ -13,7 +13,7 @@ type Bookmark struct {
 	Url  string `json:"url"`
 }
 
-const DBConfig = "host=localhost user=user password=1234 dbname=user port=5432 sslmode=disable"
+const DBConfig = "host=localhost user=wesley password=970530 dbname=testdb port=5432 sslmode=disable"
 
 func InitDatabase() error {
 	db, err := gorm.Open(postgres.Open(DBConfig), &gorm.Config{})
